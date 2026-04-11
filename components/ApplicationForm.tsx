@@ -68,7 +68,7 @@ export default function ApplicationForm() {
           Our team will call you within 24 hours. You can also message us directly on WhatsApp.
         </p>
         <a
-          href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hello%2C%20I%20just%20submitted%20my%20application%20on%20Sarkar%20Jobs`}
+          href={`https://wa.me/91${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hello%2C%20I%20just%20submitted%20my%20application%20on%20Naukri%20Junction`}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-6 py-3 rounded-xl text-sm hover:bg-green-700 transition-colors"
