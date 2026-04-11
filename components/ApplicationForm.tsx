@@ -144,6 +144,7 @@ export default function ApplicationForm() {
           <label className={labelClass}>Qualification</label>
           <select {...register("education")} className={inputClass}>
             <option value="">Select</option>
+            <option value="8th">8th Pass</option>
             <option value="10th">10th Pass</option>
             <option value="12th">12th Pass</option>
             <option value="Graduate">Graduate</option>
