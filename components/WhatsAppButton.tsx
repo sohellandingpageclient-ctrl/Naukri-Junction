@@ -8,7 +8,7 @@ export default function WhatsAppButton() {
 
   return (
     <a
-      href={`https://wa.me/91${number}?text=${message}`}
+      href={`https://wa.me/${number}?text=${message}`}
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-3 rounded-full shadow-lg transition-all hover:scale-105 active:scale-95"

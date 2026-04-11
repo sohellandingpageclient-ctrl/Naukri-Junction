@@ -105,7 +105,7 @@ export default function Home() {
               Chat directly with our placement advisor on WhatsApp
             </p>
             <a
-              href={`https://wa.me/91${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hello%2C%20I%20want%20to%20apply%20for%20a%20job`}
+              href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hello%2C%20I%20want%20to%20apply%20for%20a%20job`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-white text-green-700 font-bold px-5 py-2.5 rounded-xl text-sm hover:bg-green-50 transition-colors"
