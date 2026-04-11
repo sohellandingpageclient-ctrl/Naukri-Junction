@@ -7,11 +7,11 @@ import "./globals.css";
 const geist = Geist({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Sarkar Jobs – Apply for Government & Private Jobs",
+  title: "Naukri Junction – Apply for Government & Private Jobs",
   description:
     "Apply for the latest job openings. Fill the form and our team will contact you within 24 hours. Free registration.",
   openGraph: {
-    title: "Sarkar Jobs – Apply Now",
+    title: "Naukri Junction – Apply Now",
     description: "Get placed in top companies. Apply today!",
     type: "website",
   },

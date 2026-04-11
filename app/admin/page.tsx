@@ -221,7 +221,7 @@ export default function AdminPage() {
                       </td>
                       <td className="px-4 py-3">
                         <a
-                          href={`https://wa.me/91${app.phone}?text=${encodeURIComponent(`Hello ${app.name}, I'm calling from Sarkar Jobs regarding your application for ${app.jobType || "a job position"}.`)}`}
+                          href={`https://wa.me/91${app.phone}?text=${encodeURIComponent(`Hello ${app.name}, I'm calling from Naukri Junction regarding your application for ${app.jobType || "a job position"}.`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 bg-green-100 text-green-700 hover:bg-green-200 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"

@@ -31,7 +31,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-yellow-400 text-blue-900 px-4 py-1.5 rounded-full text-sm font-bold mb-4">
             <Star size={14} className="fill-blue-900" />
-            SARKAR JOBS – Official Portal
+            NAUKRI JUNCTION – Official Portal
           </div>
           <h1 className="text-3xl md:text-5xl font-extrabold leading-tight mb-4">
             Get a Job in 7 Days
@@ -130,7 +130,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-gray-200 py-6 text-center text-gray-500 text-xs">
-        © {new Date().getFullYear()} Sarkar Jobs. All rights reserved. |{" "}
+        © {new Date().getFullYear()} Naukri Junction. All rights reserved. |{" "}
         <a href="/admin" className="hover:underline text-gray-400">
           Admin
         </a>
