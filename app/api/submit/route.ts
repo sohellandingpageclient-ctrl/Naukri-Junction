@@ -24,7 +24,7 @@ function hashData(value: string): string {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, phone, city, age, education, experience, jobType, message } = body;
+    const { name, phone, city, age, education, experience, jobType, email, message } = body;
 
     if (!name || !phone || !city) {
       return NextResponse.json({ error: "Name, phone, and city are required." }, { status: 400 });
@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
       education: education || "",
       experience: experience || "",
       jobType: jobType || "",
+      email: email || "",
       message: message || "",
       submittedAt: new Date().toISOString(),
       status: "new",

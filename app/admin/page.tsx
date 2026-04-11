@@ -12,6 +12,7 @@ type Application = {
   education: string;
   experience: string;
   jobType: string;
+  email: string;
   message: string;
   submittedAt: string;
   status: string;
@@ -85,9 +86,9 @@ export default function AdminPage() {
   });
 
   const exportCSV = () => {
-    const headers = ["Name", "Phone", "City", "Age", "Education", "Experience", "Job Type", "Message", "Date"];
+    const headers = ["Name", "Phone", "Email", "City", "Age", "Education", "Experience", "Job Type", "Message", "Date"];
     const rows = filtered.map((a) => [
-      a.name, a.phone, a.city, a.age, a.education, a.experience, a.jobType, a.message,
+      a.name, a.phone, a.email, a.city, a.age, a.education, a.experience, a.jobType, a.message,
       new Date(a.submittedAt).toLocaleString("en-IN"),
     ]);
     const csv = [headers, ...rows].map((r) => r.map((c) => `"${c || ""}"`).join(",")).join("\n");
@@ -210,7 +211,7 @@ export default function AdminPage() {
               <table className="w-full text-sm">
                 <thead className="bg-gray-50 border-b border-gray-100">
                   <tr>
-                    {["Name", "Phone", "City", "Age", "Education", "Experience", "Job Type", "Date", "Actions"].map((h) => (
+                    {["Name", "Phone", "Email", "City", "Age", "Education", "Experience", "Job Type", "Date", "Actions"].map((h) => (
                       <th key={h} className="text-left px-4 py-3 font-semibold text-gray-600 whitespace-nowrap">
                         {h}
                       </th>
@@ -222,6 +223,7 @@ export default function AdminPage() {
                     <tr key={app.id} className={`border-b border-gray-50 hover:bg-gray-50 transition-colors ${i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`}>
                       <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{app.name}</td>
                       <td className="px-4 py-3 text-gray-700 whitespace-nowrap">{app.phone}</td>
+                      <td className="px-4 py-3 text-gray-700">{app.email || "–"}</td>
                       <td className="px-4 py-3 text-gray-700">{app.city}</td>
                       <td className="px-4 py-3 text-gray-700">{app.age || "–"}</td>
                       <td className="px-4 py-3 text-gray-700">{app.education || "–"}</td>

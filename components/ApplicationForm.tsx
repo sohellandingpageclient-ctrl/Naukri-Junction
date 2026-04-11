@@ -14,6 +14,7 @@ type FormData = {
   education: string;
   experience: string;
   jobType: string;
+  email: string;
   message: string;
 };
 
@@ -115,6 +116,20 @@ export default function ApplicationForm() {
           className={inputClass}
         />
         {errors.phone && <p className={errorClass}>{errors.phone.message}</p>}
+      </div>
+
+      {/* Email */}
+      <div>
+        <label className={labelClass}>Email Address <span className="text-gray-400 font-normal">(Optional)</span></label>
+        <input
+          {...register("email", {
+            pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Enter a valid email address" },
+          })}
+          placeholder="your@email.com"
+          inputMode="email"
+          className={inputClass}
+        />
+        {errors.email && <p className={errorClass}>{errors.email.message}</p>}
       </div>
 
       {/* City */}
