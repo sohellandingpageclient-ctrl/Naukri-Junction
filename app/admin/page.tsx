@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Download, LogOut, Phone, RefreshCw, Search } from "lucide-react";
+import { Download, LogOut, Phone, RefreshCw, Search, Trash2 } from "lucide-react";
 
 type Application = {
   id: string;
@@ -25,6 +25,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [filterJob, setFilterJob] = useState("");
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const login = async () => {
     const res = await fetch("/api/admin-auth", {
@@ -48,6 +49,20 @@ export default function AdminPage() {
       setApplications(data.applications);
     }
     setLoading(false);
+  };
+
+  const deleteApplication = async (id: string) => {
+    if (!confirm("Delete this application? This cannot be undone.")) return;
+    setDeletingId(id);
+    const res = await fetch("/api/applications", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    if (res.ok) {
+      setApplications((prev) => prev.filter((a) => a.id !== id));
+    }
+    setDeletingId(null);
   };
 
   const logout = async () => {
@@ -195,7 +210,7 @@ export default function AdminPage() {
               <table className="w-full text-sm">
                 <thead className="bg-gray-50 border-b border-gray-100">
                   <tr>
-                    {["Name", "Phone", "City", "Age", "Education", "Experience", "Job Type", "Date", "Action"].map((h) => (
+                    {["Name", "Phone", "City", "Age", "Education", "Experience", "Job Type", "Date", "Actions"].map((h) => (
                       <th key={h} className="text-left px-4 py-3 font-semibold text-gray-600 whitespace-nowrap">
                         {h}
                       </th>
@@ -220,15 +235,25 @@ export default function AdminPage() {
                         {new Date(app.submittedAt).toLocaleString("en-IN", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
                       </td>
                       <td className="px-4 py-3">
-                        <a
-                          href={`https://wa.me/91${app.phone}?text=${encodeURIComponent(`Hello ${app.name}, I'm calling from Naukri Junction regarding your application for ${app.jobType || "a job position"}.`)}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 bg-green-100 text-green-700 hover:bg-green-200 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
-                        >
-                          <Phone size={12} />
-                          WhatsApp
-                        </a>
+                        <div className="flex items-center gap-2">
+                          <a
+                            href={`https://wa.me/91${app.phone}?text=${encodeURIComponent(`Hello ${app.name}, I'm calling from Naukri Junction regarding your application for ${app.jobType || "a job position"}.`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 bg-green-100 text-green-700 hover:bg-green-200 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
+                          >
+                            <Phone size={12} />
+                            WhatsApp
+                          </a>
+                          <button
+                            onClick={() => deleteApplication(app.id)}
+                            disabled={deletingId === app.id}
+                            className="inline-flex items-center gap-1 bg-red-100 text-red-600 hover:bg-red-200 disabled:opacity-50 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
+                          >
+                            <Trash2 size={12} />
+                            {deletingId === app.id ? "..." : "Delete"}
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

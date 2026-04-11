@@ -35,3 +35,18 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({ applications });
 }
+
+export async function DELETE(req: NextRequest) {
+  const authCookie = req.cookies.get("admin_auth");
+  if (!authCookie || authCookie.value !== "true") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await req.json();
+  if (!id) return NextResponse.json({ error: "No ID provided" }, { status: 400 });
+
+  const db = getAdminDb();
+  await db.collection("applications").doc(id).delete();
+
+  return NextResponse.json({ success: true });
+}
