@@ -1,10 +1,96 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { trackLead } from "@/lib/metaPixel";
-import { Loader2 } from "lucide-react";
+import { ChevronDown, Loader2, Search } from "lucide-react";
+
+const JOB_OPTIONS = [
+  "Government Job",
+  "Office Assistant / Clerk",
+  "Data Entry Operator",
+  "Computer Operator",
+  "Field Executive",
+  "Sales Executive",
+  "Bank / Finance Job",
+  "Teacher / Instructor",
+  "Healthcare / Hospital Staff",
+  "Security Guard / Supervisor",
+  "Driver",
+  "Peon / Helper",
+  "Work from Home",
+  "Any Job",
+];
+
+function JobTypeDropdown({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const ref = useRef<HTMLDivElement>(null);
+
+  const filtered = JOB_OPTIONS.filter((o) =>
+    o.toLowerCase().includes(search.toLowerCase())
+  );
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-left flex items-center justify-between bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+      >
+        <span className={value ? "text-gray-900" : "text-gray-400"}>
+          {value || "Select job type"}
+        </span>
+        <ChevronDown size={16} className={`text-gray-400 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      {open && (
+        <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+          {/* Search */}
+          <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100">
+            <Search size={14} className="text-gray-400 shrink-0" />
+            <input
+              autoFocus
+              type="text"
+              placeholder="Search job type..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="flex-1 text-sm text-gray-900 placeholder-gray-400 outline-none bg-transparent"
+            />
+          </div>
+
+          {/* Options */}
+          <ul className="max-h-48 overflow-y-auto">
+            {filtered.length === 0 ? (
+              <li className="px-4 py-3 text-sm text-gray-400 text-center">No results</li>
+            ) : (
+              filtered.map((opt) => (
+                <li
+                  key={opt}
+                  onClick={() => { onChange(opt); setOpen(false); setSearch(""); }}
+                  className={`px-4 py-2.5 text-sm cursor-pointer transition-colors flex items-center gap-2
+                    ${value === opt ? "bg-blue-50 text-blue-700 font-semibold" : "text-gray-700 hover:bg-gray-50"}`}
+                >
+                  {value === opt && <span className="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0" />}
+                  {opt}
+                </li>
+              ))
+            )}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
 
 type FormData = {
   name: string;
@@ -18,9 +104,23 @@ type FormData = {
   message: string;
 };
 
+function randomInt(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 export default function ApplicationForm() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [jobType, setJobType] = useState("");
+  const [captcha, setCaptcha] = useState<{ a: number; b: number; answer: number } | null>(null);
+  const [captchaInput, setCaptchaInput] = useState("");
+  const [captchaError, setCaptchaError] = useState(false);
+
+  useEffect(() => {
+    const a = randomInt(1, 12);
+    const b = randomInt(1, 12);
+    setCaptcha({ a, b, answer: a + b });
+  }, []);
 
   const {
     register,
@@ -29,12 +129,17 @@ export default function ApplicationForm() {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
+    if (!captcha || parseInt(captchaInput) !== captcha.answer) {
+      setCaptchaError(true);
+      return;
+    }
+    setCaptchaError(false);
     setLoading(true);
     try {
       const res = await fetch("/api/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, jobType }),
       });
 
       const result = await res.json();
@@ -185,14 +290,7 @@ export default function ApplicationForm() {
       {/* Job Type */}
       <div>
         <label className={labelClass}>Preferred Job Type</label>
-        <select {...register("jobType")} className={inputClass}>
-          <option value="">Select job type</option>
-          <option value="Office Assistant">Office Assistant</option>
-          <option value="Field Executive">Field Executive</option>
-          <option value="Data Entry">Data Entry Operator</option>
-          <option value="Sales Executive">Sales Executive</option>
-          <option value="Any">Any Job</option>
-        </select>
+        <JobTypeDropdown value={jobType} onChange={setJobType} />
       </div>
 
       {/* Message */}
@@ -204,6 +302,27 @@ export default function ApplicationForm() {
           rows={2}
           className={`${inputClass} resize-none`}
         />
+      </div>
+
+      {/* Simple CAPTCHA */}
+      <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 text-sm text-gray-700 font-medium shrink-0">
+            <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            {captcha ? `What is ${captcha.a} + ${captcha.b}?` : "Loading…"}
+          </div>
+          <input
+            type="number"
+            inputMode="numeric"
+            value={captchaInput}
+            onChange={(e) => { setCaptchaInput(e.target.value); setCaptchaError(false); }}
+            placeholder="Answer"
+            className="w-20 border border-gray-300 rounded-lg px-3 py-1.5 text-sm text-center text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        {captchaError && <p className="text-red-500 text-xs mt-1.5">Incorrect answer. Please try again.</p>}
       </div>
 
       <button
@@ -221,8 +340,22 @@ export default function ApplicationForm() {
         )}
       </button>
 
+      {/* Trust badges */}
+      <div className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 pt-1">
+        {[
+          { icon: "🔒", label: "100% Secure" },
+          { icon: "🆓", label: "Always Free" },
+          { icon: "🛡️", label: "No Hidden Charges" },
+          { icon: "✅", label: "Verified Service" },
+        ].map(({ icon, label }) => (
+          <span key={label} className="flex items-center gap-1 text-xs text-gray-500">
+            <span>{icon}</span>{label}
+          </span>
+        ))}
+      </div>
+
       <p className="text-center text-xs text-gray-400">
-        By submitting, you agree to be contacted by our team via call or WhatsApp.
+        By submitting, you agree to be contacted by our team via call or WhatsApp. Your data is never sold or shared.
       </p>
     </form>
   );
