@@ -1,4 +1,5 @@
 import ApplicationForm from "@/components/ApplicationForm";
+import TestimonialsScroller from "@/components/TestimonialsScroller";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { Briefcase, CheckCircle, Clock, MapPin, Phone, Star, Users } from "lucide-react";
 
@@ -127,6 +128,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Testimonials */}
+      <TestimonialsScroller />
 
       {/* Footer */}
       <footer className="border-t border-gray-200 py-6 text-center text-gray-500 text-xs">
