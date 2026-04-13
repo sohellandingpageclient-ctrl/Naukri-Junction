@@ -96,7 +96,7 @@ type FormData = {
   name: string;
   phone: string;
   city: string;
-  age: string;
+  dob: string;
   education: string;
   experience: string;
   jobType: string;
@@ -248,29 +248,32 @@ export default function ApplicationForm() {
         {errors.city && <p className={errorClass}>{errors.city.message}</p>}
       </div>
 
-      {/* Age & Education – 2 cols */}
+      {/* DOB & Education – 2 cols */}
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className={labelClass}>Age</label>
+          <label className={labelClass}>Date of Birth *</label>
           <input
-            {...register("age")}
-            placeholder="Your age"
-            inputMode="numeric"
-            maxLength={2}
+            type="date"
+            {...register("dob", { required: "Date of birth is required" })}
+            max={new Date(new Date().setFullYear(new Date().getFullYear() - 14)).toISOString().split("T")[0]}
+            min="1950-01-01"
             className={inputClass}
           />
+          {errors.dob && <p className={errorClass}>{errors.dob.message}</p>}
         </div>
         <div>
-          <label className={labelClass}>Qualification</label>
-          <select {...register("education")} className={inputClass}>
+          <label className={labelClass}>Qualification *</label>
+          <select {...register("education", { required: "Qualification is required" })} className={inputClass}>
             <option value="">Select</option>
             <option value="8th">8th Pass</option>
             <option value="10th">10th Pass</option>
             <option value="12th">12th Pass</option>
+            <option value="ITI / Diploma">ITI / Diploma</option>
             <option value="Graduate">Graduate</option>
             <option value="Post Graduate">Post Graduate</option>
             <option value="Other">Other</option>
           </select>
+          {errors.education && <p className={errorClass}>{errors.education.message}</p>}
         </div>
       </div>
 

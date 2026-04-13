@@ -8,13 +8,13 @@ const JOB_POSITIONS = [
   { title: "Government Job (Various Posts)", salary: "₹18,000 – ₹60,000/month", location: "Pan India" },
   { title: "Office Assistant / Clerk", salary: "₹15,000 – ₹25,000/month", location: "Pan India" },
   { title: "Field Executive", salary: "₹18,000 – ₹30,000/month", location: "Pan India" },
-  { title: "Data Entry Operator", salary: "₹12,000 – ₹20,000/month", location: "Work from Home" },
+  { title: "Data Entry Operator", salary: "₹16,000 – ₹35,000/month", location: "Work from Home" },
   { title: "Sales Executive", salary: "₹20,000 – ₹40,000/month", location: "Pan India" },
-  { title: "Bank / Finance Jobs", salary: "₹20,000 – ₹45,000/month", location: "Pan India" },
-  { title: "Computer Operator", salary: "₹14,000 – ₹22,000/month", location: "Pan India" },
-  { title: "Peon / Helper / Driver", salary: "₹12,000 – ₹18,000/month", location: "Pan India" },
+  { title: "Bank / Finance Jobs", salary: "₹20,000 – ₹70,000/month", location: "Pan India" },
+  { title: "Computer Operator", salary: "₹14,000 – ₹30,000/month", location: "Pan India" },
+  { title: "Peon / Helper / Driver", salary: "₹12,000 – ₹25,000/month", location: "Pan India" },
   { title: "Security Guard / Supervisor", salary: "₹13,000 – ₹20,000/month", location: "Pan India" },
-  { title: "Teacher / Instructor", salary: "₹15,000 – ₹35,000/month", location: "Pan India" },
+  { title: "Teacher / Instructor", salary: "₹20,000 – ₹80,000/month", location: "Pan India" },
   { title: "Healthcare / Hospital Staff", salary: "₹16,000 – ₹40,000/month", location: "Pan India" },
   { title: "Work from Home (Various)", salary: "₹10,000 – ₹25,000/month", location: "Work from Home" },
 ];
@@ -24,7 +24,7 @@ const BENEFITS = [
   "Government & Private Both",
   "Fresher & Experienced Welcome",
   "Response within 24 Hours",
-  "10th / 12th / Graduate – All Eligible",
+  "8th / 10th / 12th / Graduate – All Eligible",
   "Work from Home Options Available",
 ];
 
@@ -186,7 +186,7 @@ export default function Home() {
           {[
             { icon: <Users size={28} />, value: "10,000+", label: "Candidates Placed" },
             { icon: <Briefcase size={28} />, value: "500+", label: "Partner Companies" },
-            { icon: <Award size={28} />, value: "6+ Years", label: "Trusted Experience" },
+            { icon: <Award size={28} />, value: "8+ Years", label: "Trusted Experience" },
             { icon: <ThumbsUp size={28} />, value: "98%", label: "Satisfaction Rate" },
           ].map(({ icon, value, label }) => (
             <div key={label} className="text-blue-900">
@@ -280,10 +280,11 @@ export default function Home() {
               </div>
               <span className="text-white font-extrabold text-lg">Naukri Junction</span>
             </div>
-            <p className="text-sm leading-relaxed mb-3">
-              India&apos;s trusted free job placement portal. Connecting job seekers with government &amp; private opportunities since 2018.
+            <p className="text-sm leading-relaxed mb-2">
+              India&apos;s trusted free job placement portal, connecting job seekers with government &amp; private opportunities since 2018. Over 8 years of dedicated service, 10,000+ candidates placed across India — completely free of charge.
             </p>
-            <p className="text-xs text-gray-500">Reg. No: NJ/2018/UP/04712</p>
+            <p className="text-xs text-gray-500 mb-1">Reg. No: NJ/2018/UP/04712</p>
+            <p className="text-xs text-gray-500">Pan India Network · Government &amp; Private Sector</p>
           </div>
 
           {/* Contact */}
@@ -292,18 +293,20 @@ export default function Home() {
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin size={14} className="mt-0.5 shrink-0 text-yellow-400" />
-                <span>12, Civil Lines, Near District Court,<br />Lucknow, Uttar Pradesh – 226001</span>
+                <span>Sewari, Bali, Falna,<br />PO: Sewari Sub Post Office,<br />DIST: Pali, Rajasthan – 306707</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Phone size={14} className="shrink-0 text-yellow-400" />
-                <a href={`tel:+${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`} className="hover:text-white transition-colors">
-                  +{process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}
-                </a>
-              </li>
+              {process.env.NEXT_PUBLIC_HELPDESK_NUMBER && (
+                <li className="flex items-center gap-2">
+                  <Phone size={14} className="shrink-0 text-yellow-400" />
+                  <a href={`tel:+91${process.env.NEXT_PUBLIC_HELPDESK_NUMBER}`} className="hover:text-white transition-colors">
+                    +91 {process.env.NEXT_PUBLIC_HELPDESK_NUMBER}
+                  </a>
+                </li>
+              )}
               <li className="flex items-center gap-2">
                 <Mail size={14} className="shrink-0 text-yellow-400" />
-                <a href="mailto:support@naukriyjunction.in" className="hover:text-white transition-colors">
-                  support@naukriyjunction.in
+                <a href="mailto:support.naukrijunction@gmail.com" className="hover:text-white transition-colors">
+                  support.naukrijunction@gmail.com
                 </a>
               </li>
             </ul>
