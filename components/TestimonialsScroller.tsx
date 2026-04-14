@@ -71,7 +71,7 @@ const TESTIMONIALS = [
   },
   {
     image: "/review11.webp",
-    name: "Rahul Bhatnagar",
+    name: "Chirag Mehta",
     city: "Gujarat",
     text: "Sir, I'm really happy today. This job was my dream and I got it because of you. Respect and thanks always sir ❤️ I'm financially free now! You are god for me sir 🙏",
   },
