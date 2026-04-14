@@ -28,6 +28,12 @@ const TESTIMONIALS = [
     text: "Sir, my family is very happy today. This job changed our life. Thank you for your guidance and support throughout 😌",
   },
   {
+    image: "/review16.jpg",
+    name: "Faizan Siddiqui",
+    city: "Uttar Pradesh",
+    text: "Allah ki raham aur aapki dua se aaj mujhe government job mil gayi 🙏 Subhan Allah, sach mein ye miracle tha mere liye. Naukri Junction ne jo help ki wo main kabhi nahi bhulunga. Bahut bahut shukriya sir, Allah aapko khush rakhe ❤️",
+  },
+  {
     image: "/review5.webp",
     name: "Rajesh Verma",
     city: "Mumbai",
@@ -92,12 +98,6 @@ const TESTIMONIALS = [
     name: "Sunita Yadav",
     city: "Uttar Pradesh",
     text: "Sir, aapne sirf job nahi dilayi… meri life hi change kar di 🙏 Naukri Junction ki help se aaj main stable hoon. Mere parents proud feel kar rahe hain. Thank you sir, hamesha aapka respect rahega ❤️",
-  },
-  {
-    image: "/review16.jpg",
-    name: "Faizan Siddiqui",
-    city: "Uttar Pradesh",
-    text: "Allah ki raham aur aapki dua se aaj mujhe government job mil gayi 🙏 Subhan Allah, sach mein ye miracle tha mere liye. Naukri Junction ne jo help ki wo main kabhi nahi bhulunga. Bahut bahut shukriya sir, Allah aapko khush rakhe ❤️",
   },
   {
     image: "/review17.jpg",
