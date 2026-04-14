@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 const TESTIMONIALS = [
+  // M M M F pattern repeated
   {
     image: "/review1.webp",
     name: "Amit Kumar",
@@ -20,6 +21,12 @@ const TESTIMONIALS = [
     name: "Arjun Singh",
     city: "Haryana",
     text: "Hello sir, I'm from Haryana. I was very stressed about my future but after connecting with Naukri Junction everything became clear. Today I got my dream job. Thank you sir ❤️",
+  },
+  {
+    image: "/review7.webp",
+    name: "Priya Gupta",
+    city: "Uttar Pradesh",
+    text: "Hello sir, Myself Priya Gupta and I'm from Uttar Pradesh. I'm really glad to be in touch with you sir. My whole life has changed now, just because of you. Trusting you was my biggest turning point. Thank you sir ☺️",
   },
   {
     image: "/review4.webp",
@@ -40,16 +47,16 @@ const TESTIMONIALS = [
     text: "Hi sir, I'm Rajesh from Mumbai. I trusted you sir and it was the best decision. Today I got selected and I'm really thankful. God bless you sir 🙏❤️",
   },
   {
+    image: "/review10.webp",
+    name: "Neha Sharma",
+    city: "Delhi",
+    text: "Sir sach bolu toh main almost give up kar chuki thi… lekin jab se main Naukri Junction se connect hui, sab change ho gaya. Aaj mere paas meri dream government job hai 🙏 Thank you so much sir, love you sir ❤️",
+  },
+  {
     image: "/review6.webp",
     name: "Vikram Patel",
     city: "Madhya Pradesh",
     text: "Sir, I don't have enough words to thank you. Because of you, my career is set now. Really appreciate your help.",
-  },
-  {
-    image: "/review7.webp",
-    name: "Priya Gupta",
-    city: "Uttar Pradesh",
-    text: "Hello sir, Myself Priya Gupta and I'm from Uttar Pradesh. I'm really glad to be in touch with you sir. My whole life has changed now, just because of you. Trusting you was my biggest turning point. Thank you sir ☺️",
   },
   {
     image: "/review8.webp",
@@ -64,10 +71,10 @@ const TESTIMONIALS = [
     text: "बहुत-बहुत शुक्रिया Naukri Junction 🙏 सर, मैं दिल से आपका धन्यवाद करना चाहता हूँ। आपकी मदद और मार्गदर्शन की वजह से आज मुझे मेरी पहली सरकारी नौकरी मिली है। आपने सच में मेरी पूरी ज़िंदगी बदल दी सर ❤️",
   },
   {
-    image: "/review10.webp",
-    name: "Neha Sharma",
-    city: "Delhi",
-    text: "Sir sach bolu toh main almost give up kar chuki thi… lekin jab se main Naukri Junction se connect hui, sab change ho gaya. Aaj mere paas meri dream government job hai 🙏 Thank you so much sir, love you sir ❤️",
+    image: "/review14.webp",
+    name: "Riya Agarwal",
+    city: "Maharashtra",
+    text: "Sir, I honestly had almost lost hope, but trusting Naukri Junction was the best decision of my life. Today I finally got my dream government job. You changed my life completely. Thank you sir 🙏",
   },
   {
     image: "/review11.webp",
@@ -86,12 +93,6 @@ const TESTIMONIALS = [
     name: "Sanjay Kapoor",
     city: "Madhya Pradesh",
     text: "सर, मैं आज जो भी हूँ आपकी वजह से हूँ 🙏 Naukri Junction पर भरोसा करके मैंने सही फैसला लिया। आपकी मदद से मुझे मेरी ड्रीम जॉब मिल गई। दिल से सलाम है आपको 🙌",
-  },
-  {
-    image: "/review14.webp",
-    name: "Riya Agarwal",
-    city: "Maharashtra",
-    text: "Sir, I honestly had almost lost hope, but trusting Naukri Junction was the best decision of my life. Today I finally got my dream government job. You changed my life completely. Thank you sir 🙏",
   },
   {
     image: "/review15.jpg",
