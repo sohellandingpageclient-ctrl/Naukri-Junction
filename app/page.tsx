@@ -1,8 +1,10 @@
 import ApplicationForm from "@/components/ApplicationForm";
 import LiveNotification from "@/components/LiveNotification";
 import TestimonialsScroller from "@/components/TestimonialsScroller";
+import TrustCertificates from "@/components/TrustCertificates";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { Award, Briefcase, CheckCircle, Clock, HelpCircle, Mail, MapPin, Phone, Shield, Star, ThumbsUp, Users } from "lucide-react";
+import Image from "next/image";
 
 const JOB_POSITIONS = [
   { title: "Government Job (Various Posts)", salary: "₹18,000 – ₹60,000/month", location: "Pan India" },
@@ -39,6 +41,9 @@ export default function Home() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
+          <div className="flex justify-center mb-4">
+            <Image src="/logo.webp" alt="Naukri Junction" width={160} height={54} className="object-contain rounded-xl" priority />
+          </div>
           <div className="inline-flex items-center gap-2 bg-yellow-400 text-blue-900 px-4 py-1.5 rounded-full text-sm font-bold mb-4">
             <Star size={14} className="fill-blue-900" />
             NAUKRI JUNCTION – Official Portal
@@ -198,6 +203,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Trust Certificates */}
+      <TrustCertificates />
+
       {/* Who Can Apply */}
       <section className="bg-white py-14 px-4 border-t border-gray-100">
         <div className="max-w-4xl mx-auto">
@@ -275,10 +283,7 @@ export default function Home() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center">
-                <Briefcase size={16} className="text-blue-900" />
-              </div>
-              <span className="text-white font-extrabold text-lg">Naukri Junction</span>
+              <Image src="/logo.webp" alt="Naukri Junction Logo" width={130} height={44} className="object-contain brightness-0 invert rounded-lg" />
             </div>
             <p className="text-sm leading-relaxed mb-2">
               India&apos;s trusted free job placement portal, connecting job seekers with government &amp; private opportunities since 2018. Over 8 years of dedicated service, 10,000+ candidates placed across India — completely free of charge.
