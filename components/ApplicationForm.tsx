@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { trackLead } from "@/lib/metaPixel";
+import { trackCompleteRegistration, trackLead, trackViewContent } from "@/lib/metaPixel";
 import { ChevronDown, Loader2, Search } from "lucide-react";
 
 const JOB_OPTIONS = [
@@ -120,6 +120,7 @@ export default function ApplicationForm() {
     const a = randomInt(1, 12);
     const b = randomInt(1, 12);
     setCaptcha({ a, b, answer: a + b });
+    trackViewContent();
   }, []);
 
   const {
@@ -152,6 +153,7 @@ export default function ApplicationForm() {
       // Fire Meta Pixel Lead event (browser-side) with shared eventId so
       // Meta deduplicates this against the server-side Conversions API event.
       trackLead({ name: data.name, phone: data.phone, city: data.city, eventId: result.eventId });
+      trackCompleteRegistration({ job_type: jobType || "General" });
 
       setSubmitted(true);
       toast.success("Application submitted! We'll contact you soon.");

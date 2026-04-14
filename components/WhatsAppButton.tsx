@@ -1,5 +1,7 @@
 "use client";
 
+import { trackContact } from "@/lib/metaPixel";
+
 export default function WhatsAppButton() {
   const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   const message = encodeURIComponent(
@@ -11,6 +13,7 @@ export default function WhatsAppButton() {
       href={`https://wa.me/${number}?text=${message}`}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => trackContact()}
       className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-3 rounded-full shadow-lg transition-all hover:scale-105 active:scale-95"
       aria-label="Chat on WhatsApp"
     >

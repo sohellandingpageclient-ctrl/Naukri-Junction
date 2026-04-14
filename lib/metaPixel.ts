@@ -28,3 +28,30 @@ export const trackLead = (data: {
     }, eventId ? { eventID: eventId } : undefined);
   }
 };
+
+export const trackViewContent = () => {
+  if (typeof window !== "undefined" && window.fbq) {
+    window.fbq("track", "ViewContent", {
+      content_name: "Job Application Page",
+      content_category: "Employment",
+      currency: "INR",
+      value: 999,
+    });
+  }
+};
+
+export const trackContact = () => {
+  if (typeof window !== "undefined" && window.fbq) {
+    window.fbq("track", "Contact");
+  }
+};
+
+export const trackCompleteRegistration = (data?: { content_name?: string; job_type?: string }) => {
+  if (typeof window !== "undefined" && window.fbq) {
+    window.fbq("track", "CompleteRegistration", {
+      content_name: "Job Placement Registration",
+      content_category: "Employment",
+      ...data,
+    });
+  }
+};
