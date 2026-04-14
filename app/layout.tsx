@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     description: "Get placed in top companies. Apply today!",
     type: "website",
   },
+  other: {
+    "facebook-domain-verification": "7has1ql7ei9e2bf5dqo9xmcmm61hz9",
+  },
 };
 
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
