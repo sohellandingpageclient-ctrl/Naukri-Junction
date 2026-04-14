@@ -93,6 +93,18 @@ const TESTIMONIALS = [
     city: "Uttar Pradesh",
     text: "Sir, aapne sirf job nahi dilayi… meri life hi change kar di 🙏 Naukri Junction ki help se aaj main stable hoon. Mere parents proud feel kar rahe hain. Thank you sir, hamesha aapka respect rahega ❤️",
   },
+  {
+    image: "/review16.jpg",
+    name: "Faizan Siddiqui",
+    city: "Uttar Pradesh",
+    text: "Allah ki raham aur aapki dua se aaj mujhe government job mil gayi 🙏 Subhan Allah, sach mein ye miracle tha mere liye. Naukri Junction ne jo help ki wo main kabhi nahi bhulunga. Bahut bahut shukriya sir, Allah aapko khush rakhe ❤️",
+  },
+  {
+    image: "/review17.jpg",
+    name: "Ayaan Khan",
+    city: "Delhi",
+    text: "Alhamdulillah! Aaj meri zindagi badal gayi 🙏 Sir, aapki wajah se aur Allah ke fazl se mujhe meri dream government job mili. Pehle umeed nahi thi lekin Naukri Junction se connect hone ke baad sab possible ho gaya. Allah aapko duniya aur akhirat mein khush rakhe ❤️",
+  },
 ];
 
 const Stars = () => (
