@@ -17,6 +17,9 @@ type Application = {
   message: string;
   submittedAt: string;
   status: string;
+  paid?: boolean;
+  paidAmount?: number;
+  paidAt?: string;
 };
 
 function calcAge(dob: string): number | null {
@@ -502,6 +505,8 @@ export default function AdminPage() {
   const [filterJob, setFilterJob] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"applications" | "certificate">("applications");
+  const [payingId, setPayingId] = useState<string | null>(null);
+  const [payAmount, setPayAmount] = useState("");
 
   const login = async () => {
     const res = await fetch("/api/admin-auth", {
@@ -539,6 +544,22 @@ export default function AdminPage() {
       setApplications((prev) => prev.filter((a) => a.id !== id));
     }
     setDeletingId(null);
+  };
+
+  const markAsPaid = async (id: string) => {
+    if (!payAmount || isNaN(Number(payAmount)) || Number(payAmount) <= 0) return;
+    const res = await fetch("/api/mark-paid", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, amount: Number(payAmount) }),
+    });
+    if (res.ok) {
+      setApplications((prev) =>
+        prev.map((a) => a.id === id ? { ...a, paid: true, paidAmount: Number(payAmount) } : a)
+      );
+      setPayingId(null);
+      setPayAmount("");
+    }
   };
 
   const logout = async () => {
@@ -692,15 +713,16 @@ export default function AdminPage() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
               {[
-                { label: "Total", value: applications.length },
-                { label: "Today", value: applications.filter((a) => new Date(a.submittedAt).toDateString() === new Date().toDateString()).length },
-                { label: "This Week", value: applications.filter((a) => Date.now() - new Date(a.submittedAt).getTime() < 7 * 24 * 60 * 60 * 1000).length },
-                { label: "Filtered", value: filtered.length },
+                { label: "Total", value: applications.length, color: "" },
+                { label: "Today", value: applications.filter((a) => new Date(a.submittedAt).toDateString() === new Date().toDateString()).length, color: "" },
+                { label: "This Week", value: applications.filter((a) => Date.now() - new Date(a.submittedAt).getTime() < 7 * 24 * 60 * 60 * 1000).length, color: "" },
+                { label: "Filtered", value: filtered.length, color: "" },
+                { label: "Paid Revenue", value: `₹${applications.filter((a) => a.paid).reduce((sum, a) => sum + (a.paidAmount || 0), 0).toLocaleString("en-IN")}`, color: "text-emerald-600" },
               ].map((s) => (
                 <div key={s.label} className="bg-white rounded-xl border border-gray-100 p-4 text-center shadow-sm">
-                  <p className="text-2xl font-bold text-gray-900">{s.value}</p>
+                  <p className={`text-2xl font-bold ${s.color || "text-gray-900"}`}>{s.value}</p>
                   <p className="text-xs text-gray-500 mt-0.5">{s.label}</p>
                 </div>
               ))}
@@ -745,7 +767,7 @@ export default function AdminPage() {
                               {new Date(app.submittedAt).toLocaleString("en-IN", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
                             </td>
                             <td className="px-4 py-3">
-                              <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-2 flex-wrap">
                                 <a
                                   href={`https://wa.me/91${app.phone}?text=${encodeURIComponent(`Hello ${app.name}, I'm calling from Naukri Junction regarding your application for ${app.jobType || "a job position"}.`)}`}
                                   target="_blank"
@@ -755,6 +777,43 @@ export default function AdminPage() {
                                   <Phone size={12} />
                                   WhatsApp
                                 </a>
+                                {app.paid ? (
+                                  <span className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap">
+                                    ✓ Paid ₹{app.paidAmount}
+                                  </span>
+                                ) : payingId === app.id ? (
+                                  <div className="flex items-center gap-1">
+                                    <span className="text-xs text-gray-500">₹</span>
+                                    <input
+                                      autoFocus
+                                      type="number"
+                                      value={payAmount}
+                                      onChange={(e) => setPayAmount(e.target.value)}
+                                      onKeyDown={(e) => e.key === "Enter" && markAsPaid(app.id)}
+                                      placeholder="Amount"
+                                      className="w-20 border border-gray-300 rounded-lg px-2 py-1 text-xs text-gray-900 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                                    />
+                                    <button
+                                      onClick={() => markAsPaid(app.id)}
+                                      className="bg-emerald-600 text-white px-2 py-1 rounded-lg text-xs font-bold hover:bg-emerald-700"
+                                    >
+                                      ✓
+                                    </button>
+                                    <button
+                                      onClick={() => { setPayingId(null); setPayAmount(""); }}
+                                      className="text-gray-400 hover:text-gray-600 px-1 text-xs"
+                                    >
+                                      ✕
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <button
+                                    onClick={() => { setPayingId(app.id); setPayAmount(""); }}
+                                    className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
+                                  >
+                                    ₹ Mark Paid
+                                  </button>
+                                )}
                                 <button
                                   onClick={() => deleteApplication(app.id)}
                                   disabled={deletingId === app.id}
@@ -795,7 +854,7 @@ export default function AdminPage() {
                           {new Date(app.submittedAt).toLocaleString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}
                         </span>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2">
                         <a
                           href={`https://wa.me/91${app.phone}?text=${encodeURIComponent(`Hello ${app.name}, I'm calling from Naukri Junction regarding your application for ${app.jobType || "a job position"}.`)}`}
                           target="_blank"
@@ -805,6 +864,44 @@ export default function AdminPage() {
                           <Phone size={13} />
                           WhatsApp
                         </a>
+                        {app.paid ? (
+                          <span className="flex-1 inline-flex items-center justify-center bg-emerald-100 text-emerald-700 px-3 py-2 rounded-xl text-xs font-bold">
+                            ✓ Paid ₹{app.paidAmount}
+                          </span>
+                        ) : payingId === app.id ? (
+                          <div className="flex-1 flex items-center gap-1 bg-emerald-50 border border-emerald-300 rounded-xl px-3 py-1.5">
+                            <span className="text-xs text-emerald-700 font-bold shrink-0">₹</span>
+                            <input
+                              autoFocus
+                              type="number"
+                              inputMode="numeric"
+                              value={payAmount}
+                              onChange={(e) => setPayAmount(e.target.value)}
+                              onKeyDown={(e) => e.key === "Enter" && markAsPaid(app.id)}
+                              placeholder="Amount"
+                              className="flex-1 min-w-0 bg-transparent text-xs text-gray-900 placeholder-gray-400 focus:outline-none"
+                            />
+                            <button
+                              onClick={() => markAsPaid(app.id)}
+                              className="bg-emerald-600 text-white px-2.5 py-1 rounded-lg text-xs font-bold hover:bg-emerald-700 shrink-0"
+                            >
+                              ✓
+                            </button>
+                            <button
+                              onClick={() => { setPayingId(null); setPayAmount(""); }}
+                              className="text-gray-400 hover:text-gray-600 text-sm font-bold shrink-0 px-0.5"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => { setPayingId(app.id); setPayAmount(""); }}
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 px-3 py-2 rounded-xl text-xs font-medium transition-colors"
+                          >
+                            ₹ Mark Paid
+                          </button>
+                        )}
                         <button
                           onClick={() => deleteApplication(app.id)}
                           disabled={deletingId === app.id}

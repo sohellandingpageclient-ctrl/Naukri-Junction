@@ -149,8 +149,9 @@ export default function ApplicationForm() {
         return;
       }
 
-      // Fire Meta Pixel Lead event (browser-side)
-      trackLead({ name: data.name, phone: data.phone, city: data.city });
+      // Fire Meta Pixel Lead event (browser-side) with shared eventId so
+      // Meta deduplicates this against the server-side Conversions API event.
+      trackLead({ name: data.name, phone: data.phone, city: data.city, eventId: result.eventId });
 
       setSubmitted(true);
       toast.success("Application submitted! We'll contact you soon.");

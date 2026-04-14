@@ -17,12 +17,14 @@ export const trackLead = (data: {
   phone?: string;
   name?: string;
   city?: string;
+  eventId?: string;
 }) => {
   if (typeof window !== "undefined" && window.fbq) {
+    const { eventId, ...eventData } = data;
     window.fbq("track", "Lead", {
       content_name: "Job Application",
       content_category: "Employment",
-      ...data,
-    });
+      ...eventData,
+    }, eventId ? { eventID: eventId } : undefined);
   }
 };

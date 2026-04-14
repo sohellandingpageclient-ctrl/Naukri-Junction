@@ -50,6 +50,10 @@ export async function POST(req: NextRequest) {
     const pixelId = process.env.META_PIXEL_ID;
     const accessToken = process.env.META_ACCESS_TOKEN;
 
+    // Shared eventId for browser+server deduplication — same ID must be
+    // passed to fbq("track","Lead",data,{eventID}) on the client side.
+    const eventId = `lead_${docRef.id}`;
+
     if (pixelId && accessToken) {
       const eventTime = Math.floor(Date.now() / 1000);
       const clientIp = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "";
@@ -61,6 +65,7 @@ export async function POST(req: NextRequest) {
           {
             event_name: "Lead",
             event_time: eventTime,
+            event_id: eventId,
             event_source_url: `${appUrl}/`,
             action_source: "website",
             user_data: {
@@ -75,6 +80,9 @@ export async function POST(req: NextRequest) {
               content_name: "Job Application",
               content_category: "Employment",
               job_type: jobType || "General",
+              // Signal expected revenue so Meta targets higher-income users
+              currency: "INR",
+              value: 999,
             },
           },
         ],
@@ -90,7 +98,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json({ success: true, id: docRef.id });
+    return NextResponse.json({ success: true, id: docRef.id, eventId });
   } catch (error) {
     console.error("Submission error:", error);
     return NextResponse.json({ error: "Something went wrong. Please try again." }, { status: 500 });
