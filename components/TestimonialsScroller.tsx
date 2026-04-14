@@ -95,7 +95,7 @@ const TESTIMONIALS = [
   },
   {
     image: "/review15.jpg",
-    name: "Sunita Yadav",
+    name: "Shreya Das",
     city: "Uttar Pradesh",
     text: "Sir, aapne sirf job nahi dilayi… meri life hi change kar di 🙏 Naukri Junction ki help se aaj main stable hoon. Mere parents proud feel kar rahe hain. Thank you sir, hamesha aapka respect rahega ❤️",
   },
