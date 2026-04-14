@@ -88,7 +88,7 @@ const TESTIMONIALS = [
     text: "Sir, I honestly had almost lost hope, but trusting Naukri Junction was the best decision of my life. Today I finally got my dream government job. You changed my life completely. Thank you sir 🙏",
   },
   {
-    image: "/review15.webp",
+    image: "/review15.jpg",
     name: "Sunita Yadav",
     city: "Uttar Pradesh",
     text: "Sir, aapne sirf job nahi dilayi… meri life hi change kar di 🙏 Naukri Junction ki help se aaj main stable hoon. Mere parents proud feel kar rahe hain. Thank you sir, hamesha aapka respect rahega ❤️",
