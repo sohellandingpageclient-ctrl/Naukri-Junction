@@ -60,7 +60,10 @@ export async function POST(req: NextRequest) {
       const userAgent = req.headers.get("user-agent") || "";
       const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
+      const testEventCode = process.env.META_TEST_EVENT_CODE;
+
       const payload = {
+        ...(testEventCode ? { test_event_code: testEventCode } : {}),
         data: [
           {
             event_name: "Lead",
