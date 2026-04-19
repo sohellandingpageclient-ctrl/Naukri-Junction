@@ -221,12 +221,26 @@ function CertificateSection({ applications }: { applications: Application[] }) {
             </FormField>
 
             <FormField label="Certificate Number" required>
-              <input
-                value={certNumber}
-                onChange={(e) => setCertNumber(e.target.value)}
-                placeholder="e.g. NJ-2026-001"
-                className={certInputClass}
-              />
+              <div className="flex gap-2">
+                <input
+                  value={certNumber}
+                  onChange={(e) => setCertNumber(e.target.value)}
+                  placeholder="e.g. NJ-2026-001"
+                  className={certInputClass}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const year = new Date().getFullYear();
+                    const rand = String(Math.floor(Math.random() * 9000) + 1000);
+                    setCertNumber(`NJ-${year}-${rand}`);
+                  }}
+                  className="shrink-0 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-colors whitespace-nowrap"
+                  title="Generate random certificate number"
+                >
+                  ⚡ Generate
+                </button>
+              </div>
             </FormField>
 
             <FormField label="Course / Program Name" required>
