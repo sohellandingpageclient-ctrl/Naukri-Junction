@@ -26,6 +26,7 @@ const JOB_OPTIONS = [
 function JobTypeDropdown({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [isOthers, setIsOthers] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   const filtered = JOB_OPTIONS.filter((o) =>
@@ -39,6 +40,28 @@ function JobTypeDropdown({ value, onChange }: { value: string; onChange: (v: str
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
+
+  if (isOthers) {
+    return (
+      <div className="space-y-1.5">
+        <input
+          autoFocus
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="Type your preferred job type..."
+          className="w-full border border-blue-400 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+        />
+        <button
+          type="button"
+          onClick={() => { setIsOthers(false); onChange(""); }}
+          className="text-xs text-blue-600 hover:text-blue-800 underline"
+        >
+          ← Back to list
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div ref={ref} className="relative">
@@ -85,6 +108,14 @@ function JobTypeDropdown({ value, onChange }: { value: string; onChange: (v: str
                 </li>
               ))
             )}
+            {/* Others option */}
+            <li
+              onClick={() => { setIsOthers(true); setOpen(false); setSearch(""); onChange(""); }}
+              className="px-4 py-2.5 text-sm cursor-pointer transition-colors flex items-center gap-2 text-blue-600 font-medium hover:bg-blue-50 border-t border-gray-100"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
+              Others – Manually type
+            </li>
           </ul>
         </div>
       )}
