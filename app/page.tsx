@@ -283,7 +283,7 @@ export default function Home() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <Image src="/logo.webp" alt="Naukri Junction Logo" width={130} height={44} className="object-contain brightness-0 invert rounded-lg" />
+              <Image src="/logo.webp" alt="Naukri Junction Logo" width={130} height={44} className="object-contain rounded-lg" />
             </div>
             <p className="text-sm leading-relaxed mb-2">
               India&apos;s trusted free job placement portal, connecting job seekers with government &amp; private opportunities since 2018. Over 8 years of dedicated service, 10,000+ candidates placed across India — completely free of charge.
