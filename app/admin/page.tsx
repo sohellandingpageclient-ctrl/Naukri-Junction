@@ -74,12 +74,21 @@ function CertificateSection({ applications }: { applications: Application[] }) {
   const [selectedApplicant, setSelectedApplicant] = useState<Application | null>(null);
   const [certNumber, setCertNumber] = useState("");
   const [courseName, setCourseName] = useState("Job Placement Program");
+  const [customCourseName, setCustomCourseName] = useState("");
   const [enrollmentDate, setEnrollmentDate] = useState("");
   const [issueDate, setIssueDate] = useState(() => new Date().toISOString().split("T")[0]);
   const [branchName, setBranchName] = useState("");
   const [authorizedBy, setAuthorizedBy] = useState("");
   const [certGenerating, setCertGenerating] = useState(false);
+  // Editable overrides for applicant fields
+  const [editName, setEditName] = useState("");
+  const [editPhone, setEditPhone] = useState("");
+  const [editCity, setEditCity] = useState("");
+  const [editEducation, setEditEducation] = useState("");
+  const [editJobType, setEditJobType] = useState("");
   const certRef = useRef<HTMLDivElement>(null);
+
+  const effectiveCourseName = courseName === "Other" ? customCourseName : courseName;
 
   const certFiltered = certSearch.trim()
     ? applications.filter((a) => {
@@ -94,11 +103,17 @@ function CertificateSection({ applications }: { applications: Application[] }) {
 
   const handleSelect = (app: Application) => {
     setSelectedApplicant(app);
+    setEditName(app.name || "");
+    setEditPhone(app.phone || "");
+    setEditCity(app.city || "");
+    setEditEducation(app.education || "");
+    setEditJobType(app.jobType || "");
     setCertSearch("");
   };
 
   const canDownload =
-    !!selectedApplicant && !!certNumber && !!enrollmentDate && !!branchName && !!authorizedBy;
+    !!selectedApplicant && !!certNumber && !!enrollmentDate && !!branchName && !!authorizedBy &&
+    (courseName !== "Other" || !!customCourseName);
 
   const handleDownloadPDF = async () => {
     if (!certRef.current || !selectedApplicant) return;
@@ -116,7 +131,7 @@ function CertificateSection({ applications }: { applications: Application[] }) {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
       pdf.addImage(imgData, "PNG", 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
-      const safeName = selectedApplicant.name.replace(/[^a-zA-Z0-9\s]/g, "").replace(/\s+/g, "_");
+      const safeName = (editName || selectedApplicant.name).replace(/[^a-zA-Z0-9\s]/g, "").replace(/\s+/g, "_");
       pdf.save(`${safeName}_NaukriJunction_Certificate.pdf`);
     } catch (err) {
       console.error("PDF generation failed:", err);
@@ -186,11 +201,21 @@ function CertificateSection({ applications }: { applications: Application[] }) {
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-5">
           <h2 className="text-base font-bold text-gray-900 mb-4">Step 2 — Certificate Details</h2>
           <div className="grid sm:grid-cols-2 gap-4">
-            <ReadOnlyField label="Student Name" value={selectedApplicant.name} />
-            <ReadOnlyField label="Phone" value={selectedApplicant.phone} />
-            <ReadOnlyField label="City" value={selectedApplicant.city} />
-            <ReadOnlyField label="Education" value={selectedApplicant.education} />
-            <ReadOnlyField label="Preferred Job Type" value={selectedApplicant.jobType} />
+            <FormField label="Student Name">
+              <input value={editName} onChange={(e) => setEditName(e.target.value)} className={certInputClass} />
+            </FormField>
+            <FormField label="Phone">
+              <input value={editPhone} onChange={(e) => setEditPhone(e.target.value)} className={certInputClass} />
+            </FormField>
+            <FormField label="City">
+              <input value={editCity} onChange={(e) => setEditCity(e.target.value)} className={certInputClass} />
+            </FormField>
+            <FormField label="Education">
+              <input value={editEducation} onChange={(e) => setEditEducation(e.target.value)} className={certInputClass} />
+            </FormField>
+            <FormField label="Preferred Job Type">
+              <input value={editJobType} onChange={(e) => setEditJobType(e.target.value)} placeholder="e.g. Electrical Department" className={certInputClass} />
+            </FormField>
 
             <FormField label="Certificate Number" required>
               <input
@@ -209,8 +234,21 @@ function CertificateSection({ applications }: { applications: Application[] }) {
                 <option>Sales &amp; Marketing Program</option>
                 <option>Banking &amp; Finance Preparation</option>
                 <option>Healthcare Job Program</option>
+                <option value="Other">Others</option>
               </select>
             </FormField>
+
+            {courseName === "Other" && (
+              <FormField label="Manually Type Course / Program Name" required>
+                <input
+                  value={customCourseName}
+                  onChange={(e) => setCustomCourseName(e.target.value)}
+                  placeholder="Type course or program name..."
+                  className={certInputClass}
+                  autoFocus
+                />
+              </FormField>
+            )}
 
             <FormField label="Enrollment Date" required>
               <input
@@ -374,10 +412,10 @@ function CertificateSection({ applications }: { applications: Application[] }) {
                     margin: "0 0 4px 0", letterSpacing: "1px",
                     textShadow: "0 1px 0 rgba(13,46,107,0.15)",
                   }}>
-                    {selectedApplicant.name}
+                    {editName || selectedApplicant.name}
                   </h2>
                   <p style={{ fontSize: "13px", color: "#555", margin: "0 0 10px 0", fontFamily: "Arial, sans-serif" }}>
-                    {[selectedApplicant.city, selectedApplicant.education, selectedApplicant.experience].filter(Boolean).join(" · ")}
+                    {[editCity || selectedApplicant.city, editEducation || selectedApplicant.education, selectedApplicant.experience].filter(Boolean).join(" · ")}
                   </p>
 
                   {/* Highlighted enrollment box */}
@@ -390,11 +428,11 @@ function CertificateSection({ applications }: { applications: Application[] }) {
                   }}>
                     <p style={{ fontSize: "13px", color: "#1e3a5f", margin: 0, lineHeight: "1.7" }}>
                       has been duly enrolled in the{" "}
-                      <strong style={{ color: "#0D2E6B", fontSize: "14px" }}>{courseName}</strong>
+                      <strong style={{ color: "#0D2E6B", fontSize: "14px" }}>{effectiveCourseName}</strong>
                       <br />
                       conducted by <strong style={{ color: "#0D2E6B" }}>Naukri Junction</strong>
-                      {selectedApplicant.jobType
-                        ? <> — Placement track: <strong style={{ color: "#0D2E6B" }}>{selectedApplicant.jobType}</strong></>
+                      {editJobType
+                        ? <> — Placement track: <strong style={{ color: "#0D2E6B" }}>{editJobType}</strong></>
                         : null}
                     </p>
                   </div>
