@@ -78,7 +78,7 @@ function CertificateSection({ applications }: { applications: Application[] }) {
   const [enrollmentDate, setEnrollmentDate] = useState("");
   const [issueDate, setIssueDate] = useState(() => new Date().toISOString().split("T")[0]);
   const [branchName, setBranchName] = useState("");
-  const [authorizedBy, setAuthorizedBy] = useState("");
+  const [authorizedBy, setAuthorizedBy] = useState("Rajveer Rajput");
   const [certGenerating, setCertGenerating] = useState(false);
   // Editable overrides for applicant fields
   const [editName, setEditName] = useState("");
@@ -112,13 +112,14 @@ function CertificateSection({ applications }: { applications: Application[] }) {
   };
 
   const canDownload =
-    !!selectedApplicant && !!certNumber && !!enrollmentDate && !!branchName && !!authorizedBy &&
+    !!selectedApplicant && !!certNumber && !!enrollmentDate && !!branchName &&
     (courseName !== "Other" || !!customCourseName);
 
   const handleDownloadPDF = async () => {
     if (!certRef.current || !selectedApplicant) return;
     setCertGenerating(true);
     try {
+      await document.fonts.ready;
       const { default: html2canvas } = await import("html2canvas");
       const { jsPDF } = await import("jspdf");
       const canvas = await html2canvas(certRef.current, {
@@ -148,6 +149,8 @@ function CertificateSection({ applications }: { applications: Application[] }) {
 
   return (
     <div className="py-2">
+      {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script:wght@700&display=swap');`}</style>
       {/* Step 1: Search */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-5">
         <h2 className="text-base font-bold text-gray-900 mb-3">Step 1 — Search &amp; Select Applicant</h2>
@@ -484,10 +487,20 @@ function CertificateSection({ applications }: { applications: Application[] }) {
 
                   {/* Signature */}
                   <div style={{ textAlign: "center" }}>
-                    <div style={{ width: "200px", borderTop: "1.5px solid #0D2E6B", paddingTop: "6px" }}>
-                      <p style={{ fontSize: "14px", color: "#0D2E6B", fontWeight: "700", margin: "0 0 2px 0" }}>{authorizedBy || "—"}</p>
-                      <p style={{ fontSize: "10px", color: "#888", margin: 0, fontFamily: "Arial, sans-serif" }}>Authorized Signatory</p>
-                      <p style={{ fontSize: "9px", color: "#aaa", margin: "1px 0 0 0", fontFamily: "Arial, sans-serif" }}>Naukri Junction</p>
+                    <div style={{ width: "220px", paddingBottom: "6px" }}>
+                      <p style={{
+                        fontSize: "34px",
+                        color: "#1a237e",
+                        fontFamily: "'Great Vibes', 'Dancing Script', cursive",
+                        fontWeight: "400",
+                        margin: "0 0 0 0",
+                        lineHeight: "1.1",
+                        letterSpacing: "1px",
+                      }}>{authorizedBy || "—"}</p>
+                      <div style={{ width: "100%", borderTop: "1.5px solid #0D2E6B", marginTop: "4px", paddingTop: "5px" }}>
+                        <p style={{ fontSize: "10px", color: "#888", margin: 0, fontFamily: "Arial, sans-serif" }}>Authorized Signatory</p>
+                        <p style={{ fontSize: "9px", color: "#aaa", margin: "1px 0 0 0", fontFamily: "Arial, sans-serif" }}>Naukri Junction</p>
+                      </div>
                     </div>
                   </div>
 
